@@ -11,7 +11,7 @@ from quotes_constants import *
 words = []
 path = ""
 windowsize = 6
-lang = "pli"
+lang = "chn"
 cutoff = 0.003
 depth = 100
 chunk_size = 500
@@ -126,10 +126,13 @@ def process_individual_result(result,lang):
     else:
         return [0, ""]
 
-
+folderpath = sys.argv[1] + "/"
+lang = sys.argv[2]
 multiprocessing_style = 'many'
 chunk_size = 100
-words = pickle.load( open("/mnt/output/pli/data/folder/" + "wordlist.p", "rb" ) )
+words = pickle.load( open(folderpath + "wordlist.p", "rb" ) )
+
+
 def process_result_npys(path,lang):
     files = []
     print("STARTING")
@@ -151,10 +154,8 @@ def process_result_npys(path,lang):
 
 
 
-#folderpath = sys.argv[1] + "/"
-# lang = sys.argv[2]
-folderpath = "/mnt/output/pli/data/folder/"
-lang = "pli "
+
+
 
 process_result_npys(folderpath,lang)
 

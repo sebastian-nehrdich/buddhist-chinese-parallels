@@ -5,12 +5,9 @@ from tqdm import tqdm as tqdm
 from merge_quotes_tools import remove_punc
 pp = pprint.PrettyPrinter(indent=4)
 
-tib_stopfile = open(TIBETAN_STOPWORDS,'r')
+
 chn_stopfile = open(CHINESE_STOPWORDS,'r')
 
-list_of_tibetan_stopwords = []
-for line in tib_stopfile:
-    list_of_tibetan_stopwords.append(line.strip())
 
 list_of_chinese_stopwords = []
 for line in chn_stopfile:

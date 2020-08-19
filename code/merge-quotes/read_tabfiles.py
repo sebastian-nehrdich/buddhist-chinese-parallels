@@ -9,7 +9,7 @@ import os
 import itertools
 from quotes_constants import *
 from pathlib import Path
-from filter_prajnaparamita import test_category_pp
+
 from merge_quotes_algo import merge_quotes,get_data_from_quote
 
 
@@ -106,31 +106,29 @@ def transform_lines_to_list(results,threshold):
                 add_flag = 0
                 quote_filename = quote_list[0].replace("#","_")
                 if head_filename != quote_filename:
-                    # this step is to filter out recursive pp-quotes
-                    if test_category_pp(head_filename,quote_filename):
-                        quote_position = int(quote_list[1])
-                        quote_segnr = quote_list[2].split(';')
-                        quote_score = float(quote_list[3])
-                        if quote_filename == head_filename:                        
-                            add_flag = 0                            
-                        if quote_score < threshold:
-                            add_flag = 1                   
-                        if add_flag == 1:
-                            quote = {
-                                "filename": quote_filename,
-                                "quote_score": [quote_score],                            
-                                "quote_position_beg": quote_position,
-                                "quote_position_last": quote_position,
-                                "head_position_beg": head_position,
-                                "head_position_last": head_position,
-                                "quote_segnr":quote_segnr,
-                                "position_pairs":[[quote_position,head_position]],
-                                "children":[],
-                                "head_segnr":head_segments}
-                            if not quote_filename in quotes:
-                                quotes[quote_filename] = [quote]
-                            else:
-                                quotes[quote_filename].append(quote)
+                    quote_position = int(quote_list[1])
+                    quote_segnr = quote_list[2].split(';')
+                    quote_score = float(quote_list[3])
+                    if quote_filename == head_filename:                        
+                        add_flag = 0                            
+                    if quote_score < threshold:
+                        add_flag = 1                   
+                    if add_flag == 1:
+                        quote = {
+                            "filename": quote_filename,
+                            "quote_score": [quote_score],                            
+                            "quote_position_beg": quote_position,
+                            "quote_position_last": quote_position,
+                            "head_position_beg": head_position,
+                            "head_position_last": head_position,
+                            "quote_segnr":quote_segnr,
+                            "position_pairs":[[quote_position,head_position]],
+                            "children":[],
+                            "head_segnr":head_segments}
+                        if not quote_filename in quotes:
+                            quotes[quote_filename] = [quote]
+                        else:
+                            quotes[quote_filename].append(quote)
         if head_segments[0] != last_segments: 
             root_segtext.append({
                 "head_filename":head_filename.replace("#","_"),

@@ -84,75 +84,14 @@ def read_stopwords(file):
     return dictionary
 
 def load_data():
-    global pali_dictionary,skt_stems_dictionary,skt_stems_retrieve_dictionary,tib_retrieve_dictionary,skt_dictionary,tib_dictionary,skt_roots,tib_skt_dictionary,wdict_skt,wdict_tib,skt_stems_tib_dictionary,wdict_pali,chn_dictionary
+    global chn_dictionary
     print("Loading data")
-    # skt_stems_dictionary = FastVector(vector_file='/mnt/code/calculate-quotes/data/skt_stemmed_aligned.vec')
-    tib_dictionary = FastVector(vector_file= MAIN_FOLDER + 'data/tibetan.vec')
     chn_dictionary = FastVector(vector_file=MAIN_FOLDER + 'data/chinese.vec')
-    pali_dictionary = FastVector(vector_file=MAIN_FOLDER + 'data/pali.vec')
-    skt_dictionary = FastVector(vector_file=MAIN_FOLDER + 'data/sanskrit.vec')
-    #skt_stems_retrieve_dictionary = FastVector(vector_file='/mnt/code/calculate-quotes/data/combined.vec')
-    #tib_retrieve_dictionary = FastVector(vector_file='/mnt/code/calculate-quotes/data/combined.vec')
 
 
-
-    #skt_stems_dictionary = FastVector(vector_file='/mnt/code/calculate-quotes/data/buddhist_stemmed_aligned.vec')
-    #tib_dictionary = FastVector(vector_file='/mnt/code/calculate-quotes/data/tibetan-stemmed-aligned.vec')
-    # print("Pickling vector dictionaries...")
-    # pickle.dump( skt_dictionary, open( "/mnt/code/calculate-quotes/data/skt_dictionary.p", "wb" ) )
-    # pickle.dump( tib_dictionary, open( "/mnt/code/calculate-quotes/data/tib_dictionary.p", "wb" ) )
-    # pickle.dump( skt_stems_dictionary, open( "/mnt/code/calculate-quotes/data/skt_stems_dictionary.p", "wb" ) )
-    # skt_dictionary = pickle.load( open( "/mnt/code/calculate-quotes/data/skt_dictionary.p", "rb" ) )
-    # skt_stems_dictionary = pickle.load( open( "/mnt/code/calculate-quotes/data/skt_stems_dictionary.p", "rb" ) )
-    # tib_dictionary = pickle.load( open( "/mnt/code/calculate-quotes/data/tib_dictionary.p", "rb" ) )
-
-    tib_skt_dictionary = read_tib_skt_dic(MAIN_FOLDER + "data/skt-tib-intern.txt")
-    skt_stems_tib_dictionary = read_tib_skt_dic(MAIN_FOLDER + "data/big_dic_stemmed.txt")
-    wdict_skt = read_weight_dictionary(MAIN_FOLDER + "data/word_count_skt.txt")
-    wdict_pali = read_weight_dictionary(MAIN_FOLDER + "data/word_count_pali.txt")
-    wdict_tib = read_weight_dictionary(MAIN_FOLDER + "data/word_count_tib.txt")
 load_data()
 
-def get_sif_tib(word):
-    a = 1e05 # this is the smoothing value 1e04 works great
-    if word in wdict_tib:
-        freq = int(wdict_tib[word])
-    else:
-        freq = 1
-    return a / (a + freq)
-
-def get_sif_skt(word):
-    a = 5e4 # this is the smoothing value
-    if word in wdict_skt:
-        freq = int(wdict_skt[word])
-    else:
-        freq = 1
-    return a / (a + freq)
-
-def get_sif_pali(word):
-    a = 5e4 # this is the smoothing value
-    if word in wdict_skt:
-        freq = int(wdict_pali[word])
-    else:
-        freq = 1
-    return a / (a + freq)
-
-def get_freq_pali(word):
-    if word in wdict_pali:
-        freq = int(wdict_pali[word])
-    else:
-        freq = 1
-    return freq
-
-
-skt_words = set(skt_dictionary.word2id.keys())
-#skt_stems = set(skt_stems_dictionary.word2id.keys())
-tib_words = set(tib_dictionary.word2id.keys())
 chn_words = set(chn_dictionary.word2id.keys())
-pali_words = set(pali_dictionary.word2id.keys())
-skt_stop = read_stopwords(SANSKRIT_STOPWORDS)
-tib_stop =  read_stopwords(TIBETAN_STOPWORDS)
-
 
 def gen_mean(vals, p):
     p = float(p)

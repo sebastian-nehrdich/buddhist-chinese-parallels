@@ -25,8 +25,7 @@ from tqdm import tqdm
 #multiprocessing_style = sys.argv[2].replace('--','')
 multiprocessing_style = 'multi'
 
-#lang = sys.argv[3].replace('--','')
-lang='pli'
+lang = "chn"
 
 number_of_threads = 16
 
@@ -238,11 +237,6 @@ def test_quote(quote_segtext,root_segtext,quote,lang):
     if (quote['quote_position_end']-quote['quote_position_beg']) > windowsize:
     #if (quote['quote_position_end']-quote['quote_position_beg']) > windowsize-20:
         flag = True
-    if "4016.3E:62b-4" in quote['quote_segnr'][0] and "195a" in quote['head_segnr'][0]:
-        print("FLAG",flag)
-        print(quote)
-        print("QUOTE SEGTEXT",quote_segtext)
-        print("ROOT SEGTEXT",root_segtext)
     return flag 
         
 
@@ -251,8 +245,7 @@ def create_quotes_json(quotes):
     results = {}
     c = 0
     for quote in quotes:
-        if not 'disabled' in quote.keys() and not "T04TD3859.2E:75b-4" in quote['quote_segnr'][0]:
-
+        if not 'disabled' in quote.keys():
             quote = get_data_from_quote(quote,windowsize)
             quote_segtext = []
             root_segtext = []
@@ -424,26 +417,15 @@ def process_file(filepath,bucket_number):
 def process_all(tab_folder,bucket_number=11):
     for file in tqdm(os.listdir(tab_folder)):
         filename = os.fsdecode(file)
-        if filename.endswith('words.p'):# and not os.path.isfile(tab_folder + "/" + filename.replace("_words.p","") +".json.gz") and not os.path.isfile(tab_folder + "/" + filename.replace("_words.p","-" + str(bucket_number) + "") +".json.gz") and not "4104" in filename:
-            #if "4064" in filename: #or "4027" in filename or "4032" in filename or "1127" in filename:
-            #if  "0220" in filename:
-            #if "1600" in filename:
-            if 1==1:
+        if filename.endswith('words.p') and not os.path.isfile(tab_folder + "/" + filename.replace("_words.p","") +".json.gz") and not os.path.isfile(tab_folder + "/" + filename.replace("_words.p","-" + str(bucket_number) + "") +".json.gz"):
                 print(filename)
                 current_filesize = Path(tab_folder+ "/" +filename).stat().st_size
                 if current_filesize < 1000000000:
                     process_file(tab_folder+ "/" +filename,bucket_number)
  
-process_all("/mnt/output/pli/data/folder0",0)
-#process_all("/mnt/output/tib/tab/folder9",6)
+for c in range(0,10):
+    process_all(sys.argv[1],c)
 
-
-
-
-# for c in range(0,10):
-#     process_all(sys.argv[1],c)
-# for c in range(0,10):
-#     process_all("/mnt/output/chn/data/folder0",c)
             
 
 

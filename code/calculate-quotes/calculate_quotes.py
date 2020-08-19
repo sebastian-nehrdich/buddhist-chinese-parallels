@@ -9,21 +9,21 @@ import numpy as np
 import multiprocessing
 from quotes_constants import *
 import pickle
-from main import tib_get_vectors_fast_from_list,skt_get_vectors_fast,tib_get_vectors_fast, predict_list_of_sentencepairs,get_sif_tib,vector_pool_hier
+from main import vector_pool_hier
 from tqdm import tqdm as tqdm
 from Levenshtein import distance
 import json
 import faiss
 import itertools
-# bucket_path = sys.argv[1]
-# main_data_path = sys.argv[2]
-#lang = sys.argv[3]
+bucket_path = sys.argv[1]
+main_data_path = sys.argv[2]
+lang = sys.argv[3]
 
 words = []
 path = ""
-depth = 100 # 100 ist einfach zuviel....
+depth = 30 
 efSearch = 16
-lang = "pli"
+lang = "chn"
 
 def clean_results_by_threshold(parameters):
     scores,positions,lang = parameters
@@ -31,12 +31,8 @@ def clean_results_by_threshold(parameters):
     current_scores = []
     threshold = 1
     list_of_accepted_numbers = []
-    if lang == 'tib':
-        threshold = TIBETAN_THRESHOLD
     if lang == 'chn':
         threshold = CHINESE_THRESHOLD        
-    if lang == 'pli':
-        threshold = PALI_THRESHOLD        
     for current_position,current_score in zip(positions,scores):
         if current_score < threshold:
             is_accepted_flag = 0
@@ -131,10 +127,7 @@ def process_folder(path,vector_path,lang):
         for directory in os.listdir(vector_path):
             calculation.process_folder(vector_path + directory,path)
 
-#process_folder(bucket_path + "/", main_data_path, lang)
-        
-    
-#process_folder("/mnt/code/calculate-quotes/vectordata/tibvectors/folder1/","/mnt/code/calculate-quotes/vectordata/tibvectors/",lang)
-process_folder("/mnt/output/pli/data/folder/","/mnt/output/pli/data/",lang)
+process_folder(bucket_path + "/", main_data_path, lang)
+
 
 

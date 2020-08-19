@@ -46,7 +46,7 @@ def read_file(filename):
     for c in range(len(chnvectors)):
          sumvectors.append(vector_pool_hier_weighted(chnvectors[c:c+windowsize],chnweights[c:c+windowsize]))
     print("DONE PROCESSING: " + filename)
-    random_number = 0#randint(0,9)
+    random_number = randint(0,9)
     npsave(CHINESE_DATA_PATH + "folder" + str(random_number) + "/" +  filename_short + "_vectors.npy",np.array(sumvectors).astype('float32'))
     pickle.dump(chnwords,open(CHINESE_DATA_PATH + "folder" + str(random_number) + "/" + filename_short + "_words.p","wb"))
     return 1
@@ -59,7 +59,8 @@ def calculate_words_and_vectors(chnfolder):
     for file in os.listdir(chnfolder):
         chnfilename = os.fsdecode(file)
         print(chnfilename)
-        chnfiles.append(chnfolder+chnfilename)
+        if "T31" in chnfilename:
+            chnfiles.append(chnfolder+chnfilename)
     pool = multiprocessing.Pool(processes=16,maxtasksperchild=1)
     file_data = pool.imap(read_file, chnfiles)
     pool.close()
